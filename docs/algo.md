@@ -118,7 +118,6 @@ S+は以下の操作に置き換えられる。
 
 ![step1のグラフの絵](./images/step1.jpg)
 
-(TODO: 空頂点を消したバージョンに書き換える)
 
 #### step1 → step2-1
 ![step1のグラフの絵](./images/step1.jpg)
