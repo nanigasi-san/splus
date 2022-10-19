@@ -1,4 +1,4 @@
-sample.pdf
+paper/*.pdf
 hoge*
 *.aux
 *.bbl
