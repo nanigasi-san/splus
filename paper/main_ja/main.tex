@@ -1,0 +1,195 @@
+\documentclass[11pt,a4j]{jreport}
+\setlength{\headheight}{15.5pt}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage[dvipdfmx]{pict2e}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{url}
+\usepackage{underscore}
+\usepackage{colortbl}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{ulem}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[ipaex]{pxchfon}
+\usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
+
+%macro
+\newcommand{\splus}{S${}^\text{+}$}
+\newcommand{\riplus}{RI${}^\text{+}$}
+\newcommand{\fl}[1]{$\rm{#1}$}
+\newcommand{\ikeg}[1]{\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}}
+%macro
+
+\begin{document}
+
+\thispagestyle{empty}
+\begin{center}
+
+\vspace{40mm}
+{\huge\noindent\textbf{KEG上におけるクロスキャップ数の計算}}\\
+\vspace{20mm}
+
+{\Large\noindent
+2022年10月21日\\
+\vspace{\baselineskip}
+Kaito Yamada\\
+}
+% \vspace{40mm}
+
+
+\end{center}
+
+\thispagestyle{empty}
+\clearpage
+
+%=====================================================================================
+
+\begin{abstract}
+    研究の要旨。なんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんや
+\end{abstract}
+
+%=====================================================================================
+
+% 目次の表示
+\tableofcontents
+
+%=====================================================================================
+\pagestyle{fancy}
+\lhead{\rightmark}
+\renewcommand{\chaptermark}[1]{\markboth{第\ \normalfont\thechapter\ 章~~#1}{}}
+
+
+%1章
+\chapter{はじめに} %章
+
+\section{研究背景} %1.1
+\subsection{\splus のアルゴリズムとは} %1.1.1
+\subsection{KEGとは} %1.1.2
+
+
+\section{先行研究}
+\subsection{C(K)=3の場合}
+\subsection{KEGの同値判定}
+
+\section{研究目的}
+
+%2章
+\chapter{アルゴリズムと計算量}
+
+\section{\splus のアルゴリズム}
+\subsection{KEGにおける\splus のアルゴリズム}
+KEGを対象とした\splus のアルゴリズムはいかに示す通りである。
+\begin{enumerate}
+    \item オイラー閉路を辺のリストで持つ
+    \item オイラー閉路から始辺\fl{e_s}(a, b, \fl{T_a}, \fl{T_a})と、終辺\fl{e_g} (c, d, \fl{T_c}, \fl{T_d})を選ぶ(この時\fl{e_s} <\fl{e_g} となるようにする)
+    \item Odd頂点Oを追加する。
+    \item a, bからOに、Oからc, dに繋がるように辺を追加する。この時aとd, bとcがそれぞれOの同じ側(A/B)に繋がるようにする。即ち、(a, O, \fl{T_a}, A), (b, O, \fl{T_b}, B), (O, c, B, \fl{T_c}), (O, d, A, \fl{T_d})の4辺を追加する。
+    \item オイラー閉路で\fl{e_s} と\fl{e_g} の間にある辺全てを逆向きにした辺を追加する。即ち、(u, v, \fl{T_u}, \fl{T_v})を(v, u, \fl{T_v}, \fl{T_u})にする。
+    \item \fl{e_s} から\fl{e_g} までの辺を削除する
+\end{enumerate}
+
+\subsection{操作対象の列挙}
+\splus はグラフへの操作だが、本質的にはオイラー閉路のうち二辺に対する操作である。あるグラフGが与えられたとき、Gに対応するオイラー閉路(辺のリスト)が一つに定まるが、その閉路の中で\splus の対象となりうる辺のペアは複数現れる。よってそのペア(操作対象)を列挙することが必要である。
+
+上記の手順1, 2の各ペアの列挙は、以下の操作で実現される。
+
+\begin{enumerate}
+    \item グラフGのオイラー閉路\fl{C_e}を求める。\fl{C_e}の長さをnとする。
+    \item \fl{C_e}を2個連結する。
+    \item i=[0, n-1]をループし、\fl{e_s}=\fl{C_e}[i]とする。j=[1, n-1]とし、\fl{e_g}=\fl{C_e}[i+j]とする。
+\end{enumerate}
+
+結果として生成されるペアはn(n-1)組となる。
+
+\subsection{操作例}
+手順3, 4, 5, 6について、ここでは単純な例を二つ上げ、他の例については付録にて示す。
+\subsubsection{step0 $\rightarrow$ step1}
+\begin{center}
+    \ikeg{step0.jpg}\\
+\end{center}
+
+\text{[(0, 1, N, N), (1, 0, N, N)]}\\
+
+区間(0, 1)を対象にS+を行う。\\
+\begin{enumerate}
+    \item Odd頂点2を追加。
+    \item a=0, Ta=N, b=1, Tb=N, c=1, Tc=N, d=0, Td=Nとして、頂点2と繋がる辺を追加。(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)の4辺。
+    \item (0, 1, N, N), (1, 0, N, N)を消去。
+\end{enumerate}
+
+最終的に残る辺は[(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)]の4辺。\\
+
+\begin{center}
+    \ikeg{step1.jpg}
+\end{center}
+
+\subsubsection{step1 $\rightarrow$ step2-2}
+step1にRI+を行い、Odd頂点3が追加され以下の状態になる。
+\begin{center}
+    \ikeg{step1_riplus.jpg}\\
+\end{center}
+[(1, 2, N, B), (2, 0, A, N), (0, 3, N, A), (3, 3, B, A), (3, 2, B, A), (2, 1, B, N)]\\
+区間(0, 3)を対象にs+を行う。\\
+
+\begin{enumerate}
+    \item Odd頂点4を追加
+    \item a=1, Ta=N, b=2, Tb=B, c=3, Tc=B, d=3, Td=Aとして、頂点3と繋がる4辺を追加。(1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A)の4辺。
+    \item (1, 2, N, B), (3, 3, B, A)を消去。
+    \item (2, 0, A, N), (0, 3, N, A)を反転して(0, 2, N, A), (3, 0, A, N)にする。
+\end{enumerate}
+
+[(3, 2, B, A), (2, 1, B, N), (1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A), (0, 2, N, A), (3, 0, A, N)]\\
+頂点3, 4はOdd+Odd->Evenに統合でき、Even頂点5の追加とと空頂点の削除をすると以下の通りになる。\\
+\text{[(2, 5, B, B), (5, 2, B, A), (2, 5, B, A), (5, 2, A, A)]}\\
+
+\begin{center}
+    \ikeg{step2_2.jpg}
+\end{center}
+
+
+\subsection{計算量}
+各ステップの計算量を考えていく。
+
+\begin{enumerate}
+    \item オイラー閉路の取得$\rightarrow$DFSなので$O(E+V)$
+    \item ペアの列挙$\rightarrow$各辺を\fl{e_s}として\fl{e_g}の候補がE-1通りなので$O(E^2)$
+    \item 頂点追加$\rightarrow$ $O(1)$
+    \item Odd頂点への4辺の追加$\rightarrow$定数なので$O(1)$
+    \item \fl{e_s}と\fl{e_g}の間の辺を逆にする$\rightarrow$最大E-2辺に行われるので$O(E)$
+    \item 逆転前の辺を削除する$\rightarrow$最大E-2辺に行われるので$O(E)$
+\end{enumerate}
+
+手順1, 2で列挙したペアのそれぞれについて手順3, 4, 5, 6を適用するため、最大次数を見ると\fl{E^2}回のループで$O(E)$の操作をするためトータルで$O(E^3)$
+
+
+\section{グラフの拡張}
+\subsection{頂点の分割}
+\subsection{\riplus のアルゴリズム}
+\subsection{計算量}
+
+\chapter{まとめ}
+研究のまとめ。なんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんや
+
+%=====================================================================================
+\chapter*{謝辞} %章を付けずにタイトル表示
+\addcontentsline{toc}{chapter}{謝辞} %章立てせずに目次に追加するおまじない
+本論文を作成するにあたり、---- みなさまに感謝の意を表します．
+
+%=====================================================================================
+
+\addcontentsline{toc}{chapter}{参考文献} %章立てせずに目次に追加するおまじない
+\renewcommand{\bibname}{参考文献} %これがないと，タイトルが「関連図書」になってしまう
+\bibliography{paper.bib} %bibtexファイルの読み込み
+\bibliographystyle{junsrt} %本文に\cite{}を入れることで，参考文献表示
+\cite{keg}
+\cite{ck3}
+\end{document}
