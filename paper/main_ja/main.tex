@@ -1,4 +1,3 @@
-
 \documentclass[11pt,a4j]{jreport}
 
 \usepackage{comment}
@@ -27,6 +26,7 @@
 \newcommand{\splus}{S${}^\text{+}$}
 \newcommand{\riplus}{RI${}^\text{+}$}
 \newcommand{\fl}[1]{$\rm{#1}$}
+\newcommand{\ikeg}[1]{\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}}
 %macro
 
 \begin{document}
@@ -97,6 +97,51 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
     \item \fl{e_s} から\fl{e_g} までの辺を削除する
 \end{enumerate}
 \subsection{操作例}
+ここでは単純な例を二つ上げ、他の例については付録にて示す。
+\subsubsection{step0 $\rightarrow$ step1}
+\begin{center}
+    \ikeg{step0.jpg}\\
+\end{center}
+
+\text{[(0, 1, N, N), (1, 0, N, N)]}\\
+
+区間(0, 1)を対象にS+を行う。\\
+\begin{enumerate}
+    \item Odd頂点2を追加。
+    \item a=0, Ta=N, b=1, Tb=N, c=1, Tc=N, d=0, Td=Nとして、頂点2と繋がる辺を追加。(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)の4辺。
+    \item (0, 1, N, N), (1, 0, N, N)を消去。
+\end{enumerate}
+
+最終的に残る辺は[(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)]の4辺。\\
+
+\begin{center}
+    \ikeg{step1.jpg}
+\end{center}
+
+\subsubsection{step1 $\rightarrow$ step2-2}
+step1にRI+を行い、Odd頂点3が追加され以下の状態になる。
+\begin{center}
+    \ikeg{step1_riplus.jpg}\\
+\end{center}
+[(1, 2, N, B), (2, 0, A, N), (0, 3, N, A), (3, 3, B, A), (3, 2, B, A), (2, 1, B, N)]\\
+区間(0, 3)を対象にs+を行う。\\
+
+\begin{enumerate}
+    \item Odd頂点4を追加
+    \item a=1, Ta=N, b=2, Tb=B, c=3, Tc=B, d=3, Td=Aとして、頂点3と繋がる4辺を追加。(1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A)の4辺。
+    \item (1, 2, N, B), (3, 3, B, A)を消去。
+    \item (2, 0, A, N), (0, 3, N, A)を反転して(0, 2, N, A), (3, 0, A, N)にする。
+\end{enumerate}
+
+[(3, 2, B, A), (2, 1, B, N), (1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A), (0, 2, N, A), (3, 0, A, N)]\\
+頂点3, 4はOdd+Odd->Evenに統合でき、Even頂点5の追加とと空頂点の削除をすると以下の通りになる。\\
+\text{[(2, 5, B, B), (5, 2, B, A), (2, 5, B, A), (5, 2, A, A)]}\\
+
+\begin{center}
+    \ikeg{step2_2.jpg}
+\end{center}
+
+
 \subsection{計算量}
 各ステップの計算量を考えていく。
 
