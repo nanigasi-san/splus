@@ -1,4 +1,4 @@
-\documentclass[11pt,a4j]{jsarticle}
+\documentclass[11pt,a4j]{jarticle}
 \setlength{\headheight}{16pt}
 \usepackage{datetime2}
 \usepackage{comment}
@@ -30,33 +30,19 @@
 \newcommand{\ikeg}[1]{\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}}
 %macro
 
+%title
+\title{KEG上におけるクロスキャップ数の計算}
+\author{Kaito Yamada}
+\date{\today}
+
 \begin{document}
-
-\thispagestyle{empty}
-\begin{center}
-
-\vspace{40mm}
-{\huge\noindent\textbf{KEG上におけるクロスキャップ数の計算}}\\
-\vspace{20mm}
-
-{\Large\vspace{\baselineskip}
-Kaito Yamada\\
-}
-\vspace{100mm}
-
-last compiled: \today\\
-
-\end{center}
-
-\thispagestyle{empty}
-\clearpage
-
-%=====================================================================================
-
+\maketitle
+\vspace{30mm}
 \begin{abstract}
     研究の要旨。なんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんや
 \end{abstract}
 
+\clearpage
 %=====================================================================================
 
 % 目次の表示
@@ -69,9 +55,9 @@ last compiled: \today\\
 %1章
 \section{はじめに} %章
 
-\subsection{研究背景} %1.1
-\subsubsection{\splus のアルゴリズムとは} %1.1.1
-\subsubsection{KEGとは} %1.1.2
+\subsection{研究背景}
+\subsubsection{\splus のアルゴリズムとは}
+\subsubsection{KEGとは}
 
 
 \subsection{先行研究}
@@ -122,7 +108,8 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 
 \subsubsection{操作例}
 ここでは単純な例を二つ上げ、他の例については付録にて示す。
-\paragraph{step0 $\rightarrow$ step1}
+
+\paragraph{step0 $\rightarrow$ step1の例}
 \begin{center}
     \ikeg{step0.jpg}\\
 \end{center}
@@ -142,7 +129,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
     \ikeg{step1.jpg}
 \end{center}
 
-\paragraph{step1 $\rightarrow$ step2-2}
+\paragraph{step1 $\rightarrow$ step2-2の例}
 step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 \begin{center}
     \ikeg{step1_riplus.jpg}\\
