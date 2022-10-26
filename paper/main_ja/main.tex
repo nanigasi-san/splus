@@ -1,5 +1,5 @@
-\documentclass[11pt,a4j]{jreport}
-\setlength{\headheight}{15.5pt}
+\documentclass[11pt,a4j]{jsreport}
+\setlength{\headheight}{16pt}
 \usepackage{comment}
 \usepackage{float}
 \usepackage{color}
@@ -189,7 +189,7 @@ step1にRI+を行い、Odd頂点3が追加され以下の状態になる。
 \addcontentsline{toc}{chapter}{参考文献} %章立てせずに目次に追加するおまじない
 \renewcommand{\bibname}{参考文献} %これがないと，タイトルが「関連図書」になってしまう
 \bibliography{paper.bib} %bibtexファイルの読み込み
-\bibliographystyle{junsrt} %本文に\cite{}を入れることで，参考文献表示
+\bibliographystyle{plain} %本文に\cite{}を入れることで，参考文献表示
 \cite{keg}
 \cite{ck3}
 \end{document}
