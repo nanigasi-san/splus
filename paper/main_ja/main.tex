@@ -1,5 +1,6 @@
 \documentclass[11pt,a4j]{jsreport}
 \setlength{\headheight}{16pt}
+\usepackage{datetime2}
 \usepackage{comment}
 \usepackage{float}
 \usepackage{color}
@@ -41,8 +42,9 @@
 {\Large\vspace{\baselineskip}
 Kaito Yamada\\
 }
-% \vspace{40mm}
+\vspace{100mm}
 
+last compiled: \today\\
 
 \end{center}
 
@@ -117,7 +119,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 
 \text{[(0, 1, N, N), (1, 0, N, N)]}\\
 
-区間(0, 1)を対象にS+を行う。\\
+区間(0, 1)を対象に\splus を行う。\\
 \begin{enumerate}
     \item Odd頂点2を追加。
     \item a=0, Ta=N, b=1, Tb=N, c=1, Tc=N, d=0, Td=Nとして、頂点2と繋がる辺を追加。(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)の4辺。
@@ -136,7 +138,7 @@ step1にRI+を行い、Odd頂点3が追加され以下の状態になる。
     \ikeg{step1_riplus.jpg}\\
 \end{center}
 [(1, 2, N, B), (2, 0, A, N), (0, 3, N, A), (3, 3, B, A), (3, 2, B, A), (2, 1, B, N)]\\
-区間(0, 3)を対象にs+を行う。\\
+区間(0, 3)を対象に\splus を行う。\\
 
 \begin{enumerate}
     \item Odd頂点4を追加
@@ -146,7 +148,7 @@ step1にRI+を行い、Odd頂点3が追加され以下の状態になる。
 \end{enumerate}
 
 [(3, 2, B, A), (2, 1, B, N), (1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A), (0, 2, N, A), (3, 0, A, N)]\\
-頂点3, 4はOdd+Odd->Evenに統合でき、Even頂点5の追加とと空頂点の削除をすると以下の通りになる。\\
+頂点3, 4はOdd+Odd->Evenに統合でき、Even頂点5の追加と空頂点の削除をすると以下の通りになる。\\
 \text{[(2, 5, B, B), (5, 2, B, A), (2, 5, B, A), (5, 2, A, A)]}\\
 
 \begin{center}
