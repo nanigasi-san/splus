@@ -91,25 +91,25 @@ last compiled: \today\\
 \subsection{計算量}
 
 \section{\splus の対象の列挙}
+\label{enum}
 \subsection{列挙のアルゴリズム}
-\splus はグラフへの操作だが、本質的にはオイラー閉路のうち二辺に対する操作である。あるグラフGが与えられたとき、Gに対応するオイラー閉路(辺のリスト)が一つに定まるが、その閉路の中で\splus の対象となりうる辺のペアは複数現れる。よってそのペア(操作対象)を列挙することが必要である。
-
-上記の手順1, 2の各ペアの列挙は、以下の操作で実現される。
+\splus はグラフへの操作だが、本質的にはオイラー閉路のうち二辺に対する操作である。あるグラフGが与えられたとき、Gに対応するオイラー閉路(辺のリスト)が一つに定まるが、その閉路の中で\splus の対象となりうる辺のペアは複数現れる。よってそのペア(操作対象)を列挙することが必要である。各ペアの列挙は、以下の操作で実現される。
 
 \begin{enumerate}
-    \item グラフGのオイラー閉路\fl{C_e}を求める。\fl{C_e}の長さをnとする。
+    \item グラフGのオイラー閉路\fl{C_e}を求める。\fl{C_e}の長さはグラフの辺の総数と等しいので、E。
     \item \fl{C_e}を2個連結する。
-    \item i=[0, n-1]をループし、\fl{e_s}=\fl{C_e}[i]とする。j=[1, n-1]とし、\fl{e_g}=\fl{C_e}[i+j]とする。
+    \item i=[0, E-1]をループし、\fl{e_s}=\fl{C_e}[i]とする。j=[1, E-1]とし、\fl{e_g}=\fl{C_e}[i+j]とする。
 \end{enumerate}
 
-結果として生成されるペアはn(n-1)組となる。
+結果として生成されるペアはE(E-1)組となる。
 
 \subsection{計算量}
 \begin{enumerate}
     \item オイラー閉路の取得$\rightarrow$DFSなので$O(E+V)$
+    \item オイラー閉路の連結$\rightarrow$長さEのものを結合するので$O(E)$
     \item ペアの列挙$\rightarrow$各辺を\fl{e_s}として、\fl{e_g}の候補がE-1通りなので$O(E^2)$
 \end{enumerate}
-
+$E=2V \Rightarrow E+V=E+\frac{1}{2}E=\frac{3}{2}E$であるため、$O(E+V)=O(E)$とみなせる。
 
 \section{\splus の適用}
 
@@ -118,8 +118,8 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 \begin{enumerate}
     \item Odd頂点Oを追加する。
     \item a, bからOに、Oからc, dに繋がるように辺を追加する。この時aとd, bとcがそれぞれOの同じ側(A/B)に繋がるようにする。即ち、(a, O, \fl{T_a}, A), (b, O, \fl{T_b}, B), (O, c, B, \fl{T_c}), (O, d, A, \fl{T_d})の4辺を追加する。
-    \item オイラー閉路で\fl{e_s} と\fl{e_g} の間にある辺全てを逆向きにした辺を追加する。即ち、(u, v, \fl{T_u}, \fl{T_v})を(v, u, \fl{T_v}, \fl{T_u})にする。
-    \item \fl{e_s} から\fl{e_g} までの辺を削除する
+    \item \fl{C_e}で\fl{e_s} と\fl{e_g} の間にある辺全てを逆向きにした辺を追加する。即ち、(u, v, \fl{T_u}, \fl{T_v})を(v, u, \fl{T_v}, \fl{T_u})にする。
+    \item $[\rm{e_s}, \rm{e_g}]$の辺を削除する
 \end{enumerate}
 
 \subsection{操作例}
@@ -131,7 +131,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 
 \text{[(0, 1, N, N), (1, 0, N, N)]}\\
 
-区間(0, 1)を対象に\splus を行う。\\
+区間$[0, 1]$を対象に\splus を行う。\\
 \begin{enumerate}
     \item Odd頂点2を追加。
     \item a=0, Ta=N, b=1, Tb=N, c=1, Tc=N, d=0, Td=Nとして、頂点2と繋がる辺を追加。(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)の4辺。
@@ -150,7 +150,7 @@ step1にRI+を行い、Odd頂点3が追加され以下の状態になる。
     \ikeg{step1_riplus.jpg}\\
 \end{center}
 [(1, 2, N, B), (2, 0, A, N), (0, 3, N, A), (3, 3, B, A), (3, 2, B, A), (2, 1, B, N)]\\
-区間(0, 3)を対象に\splus を行う。\\
+区間$[0, 3]$を対象に\splus を行う。\\
 
 \begin{enumerate}
     \item Odd頂点4を追加
@@ -178,7 +178,7 @@ step1にRI+を行い、Odd頂点3が追加され以下の状態になる。
     \item 逆転前の辺を削除する$\rightarrow$最大E-2辺に行われるので$O(E)$
 \end{enumerate}
 
-手順1, 2で列挙したペアのそれぞれについて手順3, 4, 5, 6を適用するため、最大次数を見ると\fl{E^2}回のループで$O(E)$の操作をするためトータルで$O(E^3)$
+\ref{enum}節で列挙したペアのそれぞれについて\splus を適用するため、各計算ステップの最大次数を見ると\fl{E^2}回のループで$O(E)$の操作をするためトータルで$O(E^3)$
 
 
 
