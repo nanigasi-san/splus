@@ -34,6 +34,7 @@
 (u, v, Tu, Tv)という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, Tu, A), (O, O, B, A), (O, v, B, Tv)という辺を追加する。
 
 ### 例
+TODO: 画像を追加
 #### split only
 #### ri+ only
 #### total
