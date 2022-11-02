@@ -34,6 +34,7 @@
 (u, v, Tu, Tv)という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, Tu, A), (O, O, B, A), (O, v, B, Tv)という辺を追加する。
 
 ### 例
+以下のKEGに操作をしていく。
 ![default](./images/extend_default.jpg)
 
 #### split only
@@ -43,7 +44,7 @@
 ![riplus](./images/extend_riplus.jpg)
 
 #### total
-![ex1](./images/extend_graph_ex1.jpg)
+![total](./images/extend_total.jpg)
 
 ### 計算量
 統合済みの頂点がn個あるとき、各頂点についてあり得る状態数が2つなので、グラフ1つについて$2^n$個の派生が考えられる。ここが最悪なので後々効率化したい(特にO->O+E/E+Oを片方にまとめられないか。これは実際に計算して同値判定すればわかる。E->O+O/E+Eは難しそうだけど頑張ること)。
