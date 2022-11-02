@@ -21,4 +21,4 @@ hoge*
 *.snm
 *.nav
 *.dvi
-*.synctex.gz
+*.synctex*
