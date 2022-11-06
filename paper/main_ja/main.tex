@@ -72,8 +72,30 @@
 \section{アルゴリズムと計算量}
 
 \subsection{グラフの拡張}
+グラフを拡張して、\splus の対象となりうる辺がすべて出てくるようにする。
+\begin{center}
+    \ikeg{extend_default.jpg}
+\end{center}
 \subsubsection{頂点の分割のアルゴリズム}
+頂点内の紐に対してS+を適用したいので、一つの頂点を明示的に分割し、間を繋ぐ2辺を追加する。繋ぐ辺の向きは二種類存在する(軸に対して垂直/平行)
+
+頂点は、それぞれ以下のように分割できる
+\begin{itemize}
+    \item Odd $\rightarrow$ Odd + Even / Even + Odd
+    \item Even $\rightarrow$ Odd + Odd / Even + Even
+\end{itemize}
+\begin{center}
+    \ikeg{extend_split.jpg}
+\end{center}
+
 \subsubsection{\riplus のアルゴリズム}
+解消できる自己ループを持つOddを追加することで、\riplus を表現する
+
+(u, v, Tu, Tv)という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, Tu, A), (O, O, B, A), (O, v, B, Tv)という辺を追加する。
+\begin{center}
+    \ikeg{extend_riplus.jpg}
+\end{center}
+
 \subsubsection{計算量}
 
 \subsection{\splus の対象の列挙}
