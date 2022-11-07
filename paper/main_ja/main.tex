@@ -28,7 +28,7 @@
 \newcommand{\splus}{S${}^\text{+}$}
 \newcommand{\riplus}{RI${}^\text{+}$}
 \newcommand{\fl}[1]{$\rm{#1}$}
-\newcommand{\ikeg}[1]{\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}}
+\newcommand{\image}[1]{\begin{center}\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}\end{center}}
 %macro
 
 %title
@@ -63,7 +63,7 @@
 
 
 \subsection{先行研究}
-\subsubsection{$C(K)=3$の場合}
+\subsubsection{\fl{C(K)=3}の場合}
 \subsubsection{KEGの同値判定}
 
 \subsection{研究目的}
@@ -72,29 +72,33 @@
 \section{アルゴリズムと計算量}
 
 \subsection{グラフの拡張}
-グラフを拡張して、\splus の対象となりうる辺がすべて出てくるようにする。
-\begin{center}
-    \ikeg{extend_default.jpg}
-\end{center}
+グラフを拡張して、\splus の対象となりうる辺がすべて出てくるようにする。グラフを満足に"ほぐす"には、以下の2操作が必要となる。
+\begin{itemize}
+    \item 頂点の分割
+    \item \riplus
+\end{itemize}
+
+ここでは例として、以下のstep1の結び目を拡張していく。
+\image{extend_default.jpg}
+
 \subsubsection{頂点の分割のアルゴリズム}
-頂点内の紐に対してS+を適用したいので、一つの頂点を明示的に分割し、間を繋ぐ2辺を追加する。繋ぐ辺の向きは二種類存在する(軸に対して垂直/平行)
+頂点内の紐に対して\splus を適用するため、一つの頂点を明示的に分割し、間を繋ぐ2辺を追加する。繋ぐ辺の向きは二種類存在する(軸に対して垂直/平行)
 
 頂点は、それぞれ以下のように分割できる
 \begin{itemize}
     \item Odd $\rightarrow$ Odd + Even / Even + Odd
     \item Even $\rightarrow$ Odd + Odd / Even + Even
 \end{itemize}
-\begin{center}
-    \ikeg{extend_split.jpg}
-\end{center}
+
+\image{extend_split.jpg}
 
 \subsubsection{\riplus のアルゴリズム}
-解消できる自己ループを持つOddを追加することで、\riplus を表現する
+解消できる自己ループを持つOddを追加することで、\riplus を表現する。
 
 (u, v, Tu, Tv)という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, Tu, A), (O, O, B, A), (O, v, B, Tv)という辺を追加する。
-\begin{center}
-    \ikeg{extend_riplus.jpg}
-\end{center}
+
+\image{extend_riplus.jpg}
+
 
 \subsubsection{計算量}
 
@@ -134,9 +138,8 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 ここでは単純な例を二つ上げ、他の例については付録にて示す。
 
 \paragraph{step0 $\rightarrow$ step1の例}
-\begin{center}
-    \ikeg{step0.jpg}\\
-\end{center}
+
+\image{step0.jpg}
 
 \text{[(0, 1, N, N), (1, 0, N, N)]}\\
 
@@ -149,15 +152,13 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 
 最終的に残る辺は[(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)]の4辺。\\
 
-\begin{center}
-    \ikeg{step1.jpg}
-\end{center}
+\image{step1.jpg}
 
 \paragraph{step1 $\rightarrow$ step2-2の例}
 step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
-\begin{center}
-    \ikeg{step1_riplus.jpg}\\
-\end{center}
+
+\image{step1_riplus.jpg}
+
 [(1, 2, N, B), (2, 0, A, N), (0, 3, N, A), (3, 3, B, A), (3, 2, B, A), (2, 1, B, N)]\\
 区間$[0, 3]$を対象に\splus を行う。\\
 
@@ -172,10 +173,7 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 頂点3, 4はOdd+Odd$\rightarrow$ Evenに統合でき、Even頂点5の追加と空頂点の削除をすると以下の通りになる。\\
 \text{[(2, 5, B, B), (5, 2, B, A), (2, 5, B, A), (5, 2, A, A)]}\\
 
-\begin{center}
-    \ikeg{step2_2.jpg}
-\end{center}
-
+\image{step2_2.jpg}
 
 \subsubsection{計算量}
 あるKEGにおいて、任意の2辺に対する\splus の結果を得るのに必要な計算量を考えていく。
