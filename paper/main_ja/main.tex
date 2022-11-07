@@ -29,6 +29,7 @@
 \newcommand{\riplus}{RI${}^\text{+}$}
 \newcommand{\fl}[1]{$\rm{#1}$}
 \newcommand{\image}[1]{\begin{center}\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}\end{center}}
+\newcommand{\ra }{$\rightarrow$}
 %macro
 
 %title
@@ -40,8 +41,7 @@
 \maketitle
 \vspace{30mm}
 \begin{abstract}
-    クロスキャップ数の計算効率化
-    研究の要旨。なんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんや
+    クロスキャップ数の計算効率化(仮)
 \end{abstract}
 
 \clearpage
@@ -86,8 +86,8 @@
 
 頂点は、それぞれ以下のように分割できる
 \begin{itemize}
-    \item Odd $\rightarrow$ Odd + Even / Even + Odd
-    \item Even $\rightarrow$ Odd + Odd / Even + Even
+    \item Odd \ra  Odd + Even / Even + Odd
+    \item Even \ra  Odd + Odd / Even + Even
 \end{itemize}
 
 \image{extend_split.jpg}
@@ -99,6 +99,8 @@
 
 \image{extend_riplus.jpg}
 
+どちらの操作も施すと以下のようになる。この時、頂点の分割は頂点に対する操作、\riplus は辺に対する操作であることから、頂点の分割\ra \riplus の順で行う必要がある。
+\image{extend_total.jpg}
 
 \subsubsection{計算量}
 
@@ -117,9 +119,9 @@
 
 \subsubsection{計算量}
 \begin{enumerate}
-    \item オイラー閉路の取得$\rightarrow$DFSなので$O(E+V)$
-    \item オイラー閉路の連結$\rightarrow$長さEのものを結合するので$O(E)$
-    \item ペアの列挙$\rightarrow$各辺を\fl{e_s}として、\fl{e_g}の候補がE-1通りなので$O(E^2)$
+    \item オイラー閉路の取得\ra DFSなので$O(E+V)$
+    \item オイラー閉路の連結\ra 長さEのものを結合するので$O(E)$
+    \item ペアの列挙\ra 各辺を\fl{e_s}として、\fl{e_g}の候補がE-1通りなので$O(E^2)$
 \end{enumerate}
 $E=2V \Rightarrow E+V=E+\frac{1}{2}E=\frac{3}{2}E$であるため、$O(E+V)=O(E)$とみなせる。
 
@@ -137,7 +139,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 \subsubsection{操作例}
 ここでは単純な例を二つ上げ、他の例については付録にて示す。
 
-\paragraph{step0 $\rightarrow$ step1の例}
+\paragraph{step0 \ra  step1の例}
 
 \image{step0.jpg}
 
@@ -154,7 +156,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 
 \image{step1.jpg}
 
-\paragraph{step1 $\rightarrow$ step2-2の例}
+\paragraph{step1 \ra  step2-2の例}
 step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 
 \image{step1_riplus.jpg}
@@ -170,7 +172,7 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 \end{enumerate}
 
 [(3, 2, B, A), (2, 1, B, N), (1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A), (0, 2, N, A), (3, 0, A, N)]\\
-頂点3, 4はOdd+Odd$\rightarrow$ Evenに統合でき、Even頂点5の追加と空頂点の削除をすると以下の通りになる。\\
+頂点3, 4はOdd+Odd\ra  Evenに統合でき、Even頂点5の追加と空頂点の削除をすると以下の通りになる。\\
 \text{[(2, 5, B, B), (5, 2, B, A), (2, 5, B, A), (5, 2, A, A)]}\\
 
 \image{step2_2.jpg}
@@ -179,16 +181,15 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 あるKEGにおいて、任意の2辺に対する\splus の結果を得るのに必要な計算量を考えていく。
 
 \begin{enumerate}
-    \item 頂点追加$\rightarrow$ $O(1)$
-    \item Odd頂点への4辺の追加$\rightarrow$定数なので$O(1)$
-    \item \fl{e_s}と\fl{e_g}の間の辺を逆にする$\rightarrow$最大E-2辺に行われるので$O(E)$
-    \item 逆転前の辺を削除する$\rightarrow$最大E-2辺に行われるので$O(E)$
+    \item 頂点追加\ra  $O(1)$
+    \item Odd頂点への4辺の追加\ra 定数なので$O(1)$
+    \item \fl{e_s}と\fl{e_g}の間の辺を逆にする\ra 最大E-2辺に行われるので$O(E)$
+    \item 逆転前の辺を削除する\ra 最大E-2辺に行われるので$O(E)$
 \end{enumerate}
 
 \ref{enum}節で列挙したペアのそれぞれについて\splus を適用するため、各計算ステップの最大次数を見ると\fl{E^2}回のループで$O(E)$の操作をするためトータルで$O(E^3)$
 
-
-
+%3章
 \section{まとめ}
 研究のまとめ。なんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんや
 
