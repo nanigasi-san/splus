@@ -28,7 +28,8 @@
 \newcommand{\splus}{S${}^\text{+}$}
 \newcommand{\riplus}{RI${}^\text{+}$}
 \newcommand{\fl}[1]{$\rm{#1}$}
-\newcommand{\ikeg}[1]{\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}}
+\newcommand{\image}[1]{\begin{center}\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}\end{center}}
+\newcommand{\ra }{$\rightarrow$}
 %macro
 
 %title
@@ -40,8 +41,7 @@
 \maketitle
 \vspace{30mm}
 \begin{abstract}
-    クロスキャップ数の計算効率化
-    研究の要旨。なんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんや
+    クロスキャップ数の計算効率化(仮)
 \end{abstract}
 
 \clearpage
@@ -63,18 +63,52 @@
 
 
 \subsection{先行研究}
-\subsubsection{$C(K)=3$の場合}
+\subsubsection{\fl{C(K)=3}の場合}
 \subsubsection{KEGの同値判定}
 
 \subsection{研究目的}
 
-%2章
+%2章======================================================================
 \section{アルゴリズムと計算量}
 
 \subsection{グラフの拡張}
+グラフを拡張して、\splus の対象となりうる辺がすべて出てくるようにする。グラフを満足に"ほぐす"には、以下の2操作が必要となる。
+\begin{itemize}
+    \item 頂点の分割
+    \item \riplus
+\end{itemize}
+
+ここでは例として、以下のstep1の結び目を拡張していく。
+\image{extend_default.jpg}
+
 \subsubsection{頂点の分割のアルゴリズム}
+頂点内の領域に対して\splus を適用するため、一つの頂点を明示的に分割し、間を繋ぐ2辺を追加する。繋ぐ辺の向きは二種類存在する(軸に対して垂直/平行)
+
+頂点は、それぞれ以下のように分割できる
+\begin{itemize}
+    \item Odd \ra  Odd + Even / Even + Odd
+    \item Even \ra  Odd + Odd / Even + Even
+\end{itemize}
+
+\image{extend_split.jpg}
+
 \subsubsection{\riplus のアルゴリズム}
+解消できる自己ループを持つOddを追加することで、\riplus を表現する。
+
+(u, v, Tu, Tv)という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, Tu, A), (O, O, B, A), (O, v, B, Tv)という辺を追加する。
+
+\image{extend_riplus.jpg}
+
+どちらの操作も施すと以下のようになる。この時、頂点の分割は頂点に対する操作、\riplus は辺に対する操作であることから、頂点の分割\ra \riplus の順で行う必要がある。
+\image{extend_total.jpg}
+
 \subsubsection{計算量}
+頂点の分割は、ある分割の仕方(O-OE, O-OO縛り)で、頂点を2つに分割すると、辺の削除が4回、辺の追加が6回発生する。V個の頂点すべてに分割を施すので、$O(V)$\\
+愚直にやると、それぞれ2通りの分割の仕方があるため、$2^V$通りのグラフが発生しうる。これは\splus の際に補正を加えることで、E通りに抑えることができる可能性がある。
+
+\riplus では、ある辺について、頂点追加が1回、辺の削除が1回、辺の追加が3回発生する。頂点の分割で頂点数が倍になっているので、2V頂点に対して定数操作を行うため、$O(V)$
+
+全体で$O(V)$あるいは$O(2^V)$
 
 \subsection{\splus の対象の列挙}
 \label{enum}
@@ -91,9 +125,9 @@
 
 \subsubsection{計算量}
 \begin{enumerate}
-    \item オイラー閉路の取得$\rightarrow$DFSなので$O(E+V)$
-    \item オイラー閉路の連結$\rightarrow$長さEのものを結合するので$O(E)$
-    \item ペアの列挙$\rightarrow$各辺を\fl{e_s}として、\fl{e_g}の候補がE-1通りなので$O(E^2)$
+    \item オイラー閉路の取得\ra DFSなので$O(E+V)$
+    \item オイラー閉路の連結\ra 長さEのものを結合するので$O(E)$
+    \item ペアの列挙\ra 各辺を\fl{e_s}として、\fl{e_g}の候補がE-1通りなので$O(E^2)$
 \end{enumerate}
 $E=2V \Rightarrow E+V=E+\frac{1}{2}E=\frac{3}{2}E$であるため、$O(E+V)=O(E)$とみなせる。
 
@@ -111,10 +145,9 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 \subsubsection{操作例}
 ここでは単純な例を二つ上げ、他の例については付録にて示す。
 
-\paragraph{step0 $\rightarrow$ step1の例}
-\begin{center}
-    \ikeg{step0.jpg}\\
-\end{center}
+\paragraph{step0 \ra  step1の例}
+
+\image{step0.jpg}
 
 \text{[(0, 1, N, N), (1, 0, N, N)]}\\
 
@@ -127,15 +160,13 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 
 最終的に残る辺は[(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)]の4辺。\\
 
-\begin{center}
-    \ikeg{step1.jpg}
-\end{center}
+\image{step1.jpg}
 
-\paragraph{step1 $\rightarrow$ step2-2の例}
+\paragraph{step1 \ra  step2-2の例}
 step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
-\begin{center}
-    \ikeg{step1_riplus.jpg}\\
-\end{center}
+
+\image{step1_riplus.jpg}
+
 [(1, 2, N, B), (2, 0, A, N), (0, 3, N, A), (3, 3, B, A), (3, 2, B, A), (2, 1, B, N)]\\
 区間$[0, 3]$を対象に\splus を行う。\\
 
@@ -147,28 +178,24 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 \end{enumerate}
 
 [(3, 2, B, A), (2, 1, B, N), (1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A), (0, 2, N, A), (3, 0, A, N)]\\
-頂点3, 4はOdd+Odd$\rightarrow$ Evenに統合でき、Even頂点5の追加と空頂点の削除をすると以下の通りになる。\\
+頂点3, 4はOdd+Odd\ra  Evenに統合でき、Even頂点5の追加と空頂点の削除をすると以下の通りになる。\\
 \text{[(2, 5, B, B), (5, 2, B, A), (2, 5, B, A), (5, 2, A, A)]}\\
 
-\begin{center}
-    \ikeg{step2_2.jpg}
-\end{center}
-
+\image{step2_2.jpg}
 
 \subsubsection{計算量}
 あるKEGにおいて、任意の2辺に対する\splus の結果を得るのに必要な計算量を考えていく。
 
 \begin{enumerate}
-    \item 頂点追加$\rightarrow$ $O(1)$
-    \item Odd頂点への4辺の追加$\rightarrow$定数なので$O(1)$
-    \item \fl{e_s}と\fl{e_g}の間の辺を逆にする$\rightarrow$最大E-2辺に行われるので$O(E)$
-    \item 逆転前の辺を削除する$\rightarrow$最大E-2辺に行われるので$O(E)$
+    \item 頂点追加\ra  $O(1)$
+    \item Odd頂点への4辺の追加\ra 定数なので$O(1)$
+    \item \fl{e_s}と\fl{e_g}の間の辺を逆にする\ra 最大E-2辺に行われるので$O(E)$
+    \item 逆転前の辺を削除する\ra 最大E-2辺に行われるので$O(E)$
 \end{enumerate}
 
 \ref{enum}節で列挙したペアのそれぞれについて\splus を適用するため、各計算ステップの最大次数を見ると\fl{E^2}回のループで$O(E)$の操作をするためトータルで$O(E^3)$
 
-
-
+%3章======================================================================
 \section{まとめ}
 研究のまとめ。なんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんやなんやかんや
 
@@ -179,8 +206,6 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 
 %=====================================================================================
 
-%\addcontentsline{toc}{section}{参考文献} %章立てせずに目次に追加するおまじない
-%\renewcommand{\bibname}{参考文献} %これがないと，タイトルが「関連図書」になってしまう
 \bibliography{paper.bib} %bibtexファイルの読み込み
 \bibliographystyle{plain} %本文に\cite{}を入れることで，参考文献表示
 \cite{keg}
