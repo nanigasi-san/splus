@@ -71,13 +71,13 @@
 \subsubsection{KEGとは}
 前論文\cite{keg}で結び目をオイラーグラフとして解釈し、Knot Eulerian Graph(KEG)のデータ構造を提案した。今回のアルゴリズムはKEGに対して定義されているが、データ構造の細部について、より適切な変更と命名を施しておく。
 
-まず、視覚的な判別性の向上のため、奇数交点の頂点を円、偶数交点の頂点を正方形で表すこととした。
+まず、視覚的な判別性の向上のため、図\ref{fig:parity}に示すように奇数交点の頂点を円、偶数交点の頂点を正方形で表すこととした。
 \image{about_parity.jpg}{頂点の偶奇}{parity}
 
-そして、ある頂点を軸で区切った際の左右を\textbf{極(pole)}と呼ぶこととする。極は順序を気にせずA/Bと命名され、頂点Xの極は\f{P_X}と表す。この時\f{P_X=A}あるいは\f{P_X=B}である。また、空頂点の極はN(None)とする。
+そして、\ref{fig:pole}のように、頂点を軸で区切った際の左右を\textbf{極(pole)}と呼ぶこととする。極は順序を気にせずA/Bと命名され、頂点Xの極は\f{P_X}と表す。この時\f{P_X=A}あるいは\f{P_X=B}である。また、空頂点の極はN(None)とする。
 \image[height=200pt]{about_pole.jpg}{頂点の極}{pole}
 
-また、頂点に出入りする辺の向きについて、以下の2パターンをそれぞれ\textbf{軸対称(axial symmetry)}、\textbf{非軸対称(asymmtry)}とする。
+また、頂点に出入りする辺の向きについて、図\ref{fig:axis}に示す2パターンをそれぞれ\textbf{軸対称(axial symmetry)}、\textbf{非軸対称(asymmtry)}とする。
 \image{about_axis.jpg}{軸対称と非軸対称}{axis}
 
 \subsection{先行研究}
@@ -98,13 +98,13 @@
     \item \riplus
 \end{itemize}
 
-ここでは例として、以下のstep1の結び目を拡張していく。
-\image{extend_default.jpg}{step1}{default}
+ここでは例として、図\ref{fig:default}のstep1の結び目を拡張していく。
+\image{extend_default.jpg}{step1(拡張前)}{default}
 
 \subsubsection{頂点の分割のアルゴリズム}
 頂点内の領域に対して\splus を適用するため、一つの頂点を明示的に分割し、間を繋ぐ2辺を追加する。繋ぐ辺の向きは二種類存在する(軸に対して垂直/平行)
 
-頂点は、それぞれ以下のように分割できる
+頂点は、それぞれ以下のように分割できる。分割した状態を図\ref{fig:split}に示す。
 \begin{itemize}
     \item Odd \ra  Odd + Even / Even + Odd
     \item Even \ra  Odd + Odd / Even + Even
@@ -115,11 +115,11 @@
 \subsubsection{\riplus のアルゴリズム}
 解消できる自己ループを持つOddを追加することで、\riplus を表現する。
 
-(u, v, \f{P_u}, \f{P_v})という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, \f{P_u}, A), (O, O, B, A), (O, v, B, \f{T_v})という辺を追加する。
+(u, v, \f{P_u}, \f{P_v})という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, \f{P_u}, A), (O, O, B, A), (O, v, B, \f{T_v})という辺を追加する。\riplus をした状態を図\ref{fig:riplus}に示す。
 
 \image{extend_riplus.jpg}{step1(\riplus )}{riplus}
 
-どちらの操作も施すと以下のようになる。この時、頂点の分割は頂点に対する操作、\riplus は辺に対する操作であることから、頂点の分割\ra \riplus の順で行う必要がある。
+どちらの操作も施すと図\ref{fig:total}のようになる。この時、頂点の分割は頂点に対する操作、\riplus は辺に対する操作であることから、頂点の分割\ra \riplus の順で行う必要がある。
 \image{extend_total.jpg}{step1(分割+\riplus )}{total}
 
 \subsubsection{計算量}
@@ -184,7 +184,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 
 \paragraph{step1 \ra  step2-2の例}
 
-step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
+初めに、step1に\riplus を行い、Odd頂点3が追加された図\ref{fig:step1riplus}の状態にする。
 
 \image{step1_riplus.jpg}{step1(\riplus )}{step1riplus}
 
@@ -199,7 +199,7 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 \end{enumerate}
 
 [(3, 2, B, A), (2, 1, B, N), (1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A), (0, 2, N, A), (3, 0, A, N)]\\
-頂点3, 4はOdd+Odd\ra  Evenに統合でき、Even頂点5の追加と空頂点の削除をすると以下の通りになる。\\
+頂点3, 4はOdd+Odd\ra  Evenに統合でき、統合結果のEven頂点5の追加と空頂点の削除をすると図\ref{fig:step2-2}の通りになる。\\
 \text{[(2, 5, B, B), (5, 2, B, A), (2, 5, B, A), (5, 2, A, A)]}\\
 
 \image{step2_2.jpg}{step2-2}{step2-2}
