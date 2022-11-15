@@ -27,7 +27,7 @@
 %macro
 \newcommand{\splus}{S${}^\text{+}$}
 \newcommand{\riplus}{RI${}^\text{+}$}
-\newcommand{\fl}[1]{$\rm{#1}$}
+\newcommand{\f}[1]{$\rm{#1}$} %flat math
 \newcommand{\image}[1]{\begin{center}\includegraphics[width=200pt, height=100pt]{../../docs/images/#1}\end{center}}
 \newcommand{\ra }{$\rightarrow$}
 %macro
@@ -49,21 +49,33 @@
 
 % 目次の表示
 \tableofcontents
+\clearpage
 
 %=====================================================================================
 \pagestyle{plain}
 \lhead{\rightmark}
 
-%1章
-\section{はじめに} %章
+%1章==============================================================
+\section{はじめに}
 
 \subsection{研究背景}
-\subsubsection{\splus のアルゴリズムとは}
+\subsubsection{\splus とは}
 \subsubsection{KEGとは}
+前論文\cite{keg}で結び目をオイラーグラフとして解釈し、Knot Eulerian Graph(KEG)のデータ構造を提案した。今回のアルゴリズムはKEGに対して定義されているが、データ構造の細部について、より適切な変更と命名を施しておく。
 
+まず、視覚的な判別性の向上のため、奇数交点の頂点を円、偶数交点の頂点を正方形で表すこととした。
+\image{about_parity.jpg}
+
+そして、ある頂点を軸で区切った際の左右を\textbf{極(pole)}と呼ぶこととする。極は順序を気にせずA/Bと命名され、頂点Xの極は\f{P_X}と表す。この時\f{P_X=A}あるいは\f{P_X=B}である。また、空頂点の極はN(None)とする。
+\image{about_pole.jpg}
+
+また、頂点に出入りする辺の向きについて、以下の2パターンをそれぞれ\textbf{軸対称(axial symmetry)}、\textbf{非軸対称(asymmtry)}とする。
+\image{about_axis.jpg}
 
 \subsection{先行研究}
-\subsubsection{\fl{C(K)=3}の場合}
+\subsubsection{\f{C(K)=3}の場合}
+\f{C(K)=3}の場合については、伊藤昇先生の論文\cite{ck3}にて完全なリストが作成されている。ここでは結び目に対して手作業で網羅的に\splus を施し、生成された結果のうち、結び目として同値なものを削除している。
+
 \subsubsection{KEGの同値判定}
 
 \subsection{研究目的}
@@ -95,7 +107,7 @@
 \subsubsection{\riplus のアルゴリズム}
 解消できる自己ループを持つOddを追加することで、\riplus を表現する。
 
-(u, v, Tu, Tv)という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, Tu, A), (O, O, B, A), (O, v, B, Tv)という辺を追加する。
+(u, v, \f{P_u}, \f{P_v})という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, \f{P_u}, A), (O, O, B, A), (O, v, B, \f{T_v})という辺を追加する。
 
 \image{extend_riplus.jpg}
 
@@ -116,9 +128,9 @@
 \splus はグラフへの操作だが、本質的にはオイラー閉路のうち二辺に対する操作である。あるグラフGが与えられたとき、Gに対応するオイラー閉路(辺のリスト)が一つに定まるが、その閉路の中で\splus の対象となりうる辺のペアは複数現れる。よってそのペア(操作対象)を列挙することが必要である。各ペアの列挙は、以下の操作で実現される。
 
 \begin{enumerate}
-    \item グラフGのオイラー閉路\fl{C_e}を求める。\fl{C_e}の長さはグラフの辺の総数と等しいので、E。
-    \item \fl{C_e}を2個連結する。
-    \item i=[0, E-1]をループし、\fl{e_s}=\fl{C_e}[i]とする。j=[1, E-1]とし、\fl{e_g}=\fl{C_e}[i+j]とする。
+    \item グラフGのオイラー閉路\f{C_e}を求める。\f{C_e}の長さはグラフの辺の総数と等しいので、E。
+    \item \f{C_e}を2個連結する。
+    \item i=[0, E-1]をループし、\f{e_s}=\f{C_e}[i]とする。j=[1, E-1]とし、\f{e_g}=\f{C_e}[i+j]とする。
 \end{enumerate}
 
 結果として生成されるペアはE(E-1)組となる。
@@ -127,7 +139,7 @@
 \begin{enumerate}
     \item オイラー閉路の取得\ra DFSなので$O(E+V)$
     \item オイラー閉路の連結\ra 長さEのものを結合するので$O(E)$
-    \item ペアの列挙\ra 各辺を\fl{e_s}として、\fl{e_g}の候補がE-1通りなので$O(E^2)$
+    \item ペアの列挙\ra 各辺を\f{e_s}として、\f{e_g}の候補がE-1通りなので$O(E^2)$
 \end{enumerate}
 $E=2V \Rightarrow E+V=E+\frac{1}{2}E=\frac{3}{2}E$であるため、$O(E+V)=O(E)$とみなせる。
 
@@ -137,8 +149,8 @@ $E=2V \Rightarrow E+V=E+\frac{1}{2}E=\frac{3}{2}E$であるため、$O(E+V)=O(E)
 KEGを対象とした\splus のアルゴリズムはいかに示す通りである。
 \begin{enumerate}
     \item Odd頂点Oを追加する。
-    \item a, bからOに、Oからc, dに繋がるように辺を追加する。この時aとd, bとcがそれぞれOの同じ側(A/B)に繋がるようにする。即ち、(a, O, \fl{T_a}, A), (b, O, \fl{T_b}, B), (O, c, B, \fl{T_c}), (O, d, A, \fl{T_d})の4辺を追加する。
-    \item \fl{C_e}で\fl{e_s} と\fl{e_g} の間にある辺全てを逆向きにした辺を追加する。即ち、(u, v, \fl{T_u}, \fl{T_v})を(v, u, \fl{T_v}, \fl{T_u})にする。
+    \item a, bからOに、Oからc, dに繋がるように辺を追加する。この時aとd, bとcがそれぞれOの同じ側(A/B)に繋がるようにする。即ち、(a, O, \f{P_a}, A), (b, O, \f{P_b}, B), (O, c, B, \f{P_c}), (O, d, A, \f{P_d})の4辺を追加する。
+    \item \f{C_e}で\f{e_s} と\f{e_g} の間にある辺全てを逆向きにした辺を追加する。即ち、(u, v, \f{P_u}, \f{P_v})を(v, u, \f{P_v}, \f{P_u})にする。
     \item $[\rm{e_s}, \rm{e_g}]$の辺を削除する
 \end{enumerate}
 
@@ -154,7 +166,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 区間$[0, 1]$を対象に\splus を行う。\\
 \begin{enumerate}
     \item Odd頂点2を追加。
-    \item a=0, \fl{T_a}=N, b=1, \fl{T_b}=N, c=1, \fl{T_c}=N, d=0, \fl{T_d}=Nとして、頂点2と繋がる辺を追加。(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)の4辺。
+    \item a=0, \f{P_a}=N, b=1, \f{P_b}=N, c=1, \f{P_c}=N, d=0, \f{P_d}=Nとして、頂点2と繋がる辺を追加。(0, 2, N, A),(1, 2, N, B),(2, 1, B, N),(2, 0, A, N)の4辺。
     \item (0, 1, N, N), (1, 0, N, N)を消去。
 \end{enumerate}
 
@@ -163,6 +175,7 @@ KEGを対象とした\splus のアルゴリズムはいかに示す通りであ�
 \image{step1.jpg}
 
 \paragraph{step1 \ra  step2-2の例}
+
 step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 
 \image{step1_riplus.jpg}
@@ -172,7 +185,7 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 
 \begin{enumerate}
     \item Odd頂点4を追加
-    \item a=1, \fl{T_a}=N, b=2, \fl{T_b}=B, c=3, \fl{T_c}=B, d=3, \fl{T_d}=Aとして、頂点3と繋がる4辺を追加。(1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A)の4辺。
+    \item a=1, \f{P_a}=N, b=2, \f{P_b}=B, c=3, \f{P_c}=B, d=3, \f{P_d}=Aとして、頂点3と繋がる4辺を追加。(1, 4, N, A), (2, 4, B, B), (4, 3, B, B), (4, 3, A, A)の4辺。
     \item (1, 2, N, B), (3, 3, B, A)を消去。
     \item (2, 0, A, N), (0, 3, N, A)を反転して(0, 2, N, A), (3, 0, A, N)にする。
 \end{enumerate}
@@ -189,11 +202,11 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 \begin{enumerate}
     \item 頂点追加\ra  $O(1)$
     \item Odd頂点への4辺の追加\ra 定数なので$O(1)$
-    \item \fl{e_s}と\fl{e_g}の間の辺を逆にする\ra 最大E-2辺に行われるので$O(E)$
+    \item \f{e_s}と\f{e_g}の間の辺を逆にする\ra 最大E-2辺に行われるので$O(E)$
     \item 逆転前の辺を削除する\ra 最大E-2辺に行われるので$O(E)$
 \end{enumerate}
 
-\ref{enum}節で列挙したペアのそれぞれについて\splus を適用するため、各計算ステップの最大次数を見ると\fl{E^2}回のループで$O(E)$の操作をするためトータルで$O(E^3)$
+\ref{enum}節で列挙したペアのそれぞれについて\splus を適用するため、各計算ステップの最大次数を見ると\f{E^2}回のループで$O(E)$の操作をするためトータルで$O(E^3)$
 
 %3章======================================================================
 \section{まとめ}
@@ -206,8 +219,6 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 
 %=====================================================================================
 
-\bibliography{paper.bib} %bibtexファイルの読み込み
 \bibliographystyle{plain} %本文に\cite{}を入れることで，参考文献表示
-\cite{keg}
-\cite{ck3}
+\bibliography{paper.bib} %bibtexファイルの読み込み
 \end{document}
