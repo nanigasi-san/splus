@@ -49,6 +49,7 @@
 
 % 目次の表示
 \tableofcontents
+\clearpage
 
 %=====================================================================================
 \pagestyle{plain}
@@ -58,12 +59,20 @@
 \section{はじめに} %章
 
 \subsection{研究背景}
-\subsubsection{\splus のアルゴリズムとは}
+\subsubsection{\splus とは}
 \subsubsection{KEGとは}
+前論文\cite{keg}で結び目をオイラーグラフとして解釈し、Knot Eulerian Graph(KEG)のデータ構造を提案した。今回のアルゴリズムはKEGに対して定義されているが、データ構造の細部について、より適切な命名を施しておく。
 
+頂点を軸で区切った際の左右を\textbf{極(pole)}と呼ぶこととする。極は順序を気にせずA/Bと命名され、頂点Xの極は\fl{P_X}と表す。この時\fl{P_X=A}あるいは\fl{P_X=B}である。また、空頂点の極はN(None)とする。
+
+頂点に出入りする辺の向きについて、以下の2パターンをそれぞれ\textbf{軸対称(axial symmetry)}、\textbf{非軸対称(asymmtry)}とする。
+
+また、視覚的な判別性の向上のため、奇数交点の頂点を円、偶数交点の頂点を正方形で表すこととした。
 
 \subsection{先行研究}
 \subsubsection{\fl{C(K)=3}の場合}
+\fl{C(K)=3}の場合については、伊藤昇先生の論文\cite{ck3}にて完全なリストが作成されている。ここでは結び目に対して手作業で網羅的に\splus を施し、生成された結果のうち、結び目として同値なものを削除している。
+
 \subsubsection{KEGの同値判定}
 
 \subsection{研究目的}
@@ -206,8 +215,6 @@ step1に\riplus を行い、Odd頂点3が追加され以下の状態になる。
 
 %=====================================================================================
 
-\bibliography{paper.bib} %bibtexファイルの読み込み
 \bibliographystyle{plain} %本文に\cite{}を入れることで，参考文献表示
-\cite{keg}
-\cite{ck3}
+\bibliography{paper.bib} %bibtexファイルの読み込み
 \end{document}
