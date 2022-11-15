@@ -28,12 +28,12 @@
 \newcommand{\splus}{S${}^\text{+}$}
 \newcommand{\riplus}{RI${}^\text{+}$}
 \newcommand{\f}[1]{$\rm{#1}$} %flat math
-\newcommand{\image}[3]{%
+\newcommand{\image}[4][height=100pt]{%
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=200pt, height=100pt]{../../docs/images/#1}
-    \caption{#2}
-    \label{fig:#3}
+    \includegraphics[width=200pt, #1]{../../docs/images/#2}
+    \caption{#3}
+    \label{fig:#4}
 \end{figure}%
 }
 
@@ -75,7 +75,7 @@
 \image{about_parity.jpg}{parity}{parity}
 
 そして、ある頂点を軸で区切った際の左右を\textbf{極(pole)}と呼ぶこととする。極は順序を気にせずA/Bと命名され、頂点Xの極は\f{P_X}と表す。この時\f{P_X=A}あるいは\f{P_X=B}である。また、空頂点の極はN(None)とする。
-\image{about_pole.jpg}{pole}{pole}
+\image[height=300pt]{about_pole.jpg}{pole}{pole}
 
 また、頂点に出入りする辺の向きについて、以下の2パターンをそれぞれ\textbf{軸対称(axial symmetry)}、\textbf{非軸対称(asymmtry)}とする。
 \image{about_axis.jpg}{axis}{axis}
