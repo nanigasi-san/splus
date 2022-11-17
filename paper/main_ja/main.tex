@@ -23,7 +23,7 @@
 \usepackage{xcolor}
 \usepackage[ipaex]{pxchfon}
 \usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
-\usepackage[dvipdfmx, hidelinks=true]{hyperref}
+\usepackage[dvipdfmx, hidelinks]{hyperref}
 \usepackage{pxjahyper}
 
 %macro
@@ -40,6 +40,7 @@
 }
 
 \newcommand{\ra }{$\rightarrow$}
+\newcommand{\tops}[2]{\texorpdfstring{#1}{#2}} %tex or pdf strings
 %macro
 
 %title
@@ -69,7 +70,7 @@
 \section{はじめに}
 
 \subsection{研究背景}
-\subsubsection{\splus とは}
+\subsubsection{\tops{\splus}{splus} とは}
 \subsubsection{KEGとは}
 前論文\cite{keg}で結び目をオイラーグラフとして解釈し、Knot Eulerian Graph(KEG)のデータ構造を提案した。今回のアルゴリズムはKEGに対して定義されているが、データ構造の細部について、より適切な変更と命名を施しておく。
 
@@ -83,7 +84,7 @@
 \image{about_axis.jpg}{軸対称と非軸対称}{axis}
 
 \subsection{先行研究}
-\subsubsection{\f{C(K)=3}の場合}
+\subsubsection{\tops{\f{C(K)=3}}{C(K)=3}の場合}
 \f{C(K)=3}の場合については、伊藤昇先生の論文\cite{ck3}にて完全なリストが作成されている。ここでは結び目に対して手作業で網羅的に\splus を施し、生成された結果のうち、結び目として同値なものを削除している。
 
 \subsubsection{KEGの同値判定}
@@ -114,7 +115,7 @@
 
 \image{extend_split.jpg}{step1(分割)}{split}
 
-\subsubsection{\riplus のアルゴリズム}
+\subsubsection{\tops{\riplus}{RI+} のアルゴリズム}
 解消できる自己ループを持つOddを追加することで、\riplus を表現する。
 
 (u, v, \f{P_u}, \f{P_v})という辺があるとき、その辺を削除し、Odd頂点Oを追加し、辺(u, O, \f{P_u}, A), (O, O, B, A), (O, v, B, \f{T_v})という辺を追加する。\riplus をした状態を図\ref{fig:riplus}に示す。
@@ -132,7 +133,7 @@
 
 全体で$O(V)$あるいは$O(2^V)$
 
-\subsection{\splus の対象の列挙}
+\subsection{\tops{\splus}{S+} の対象の列挙}
 \label{enum}
 \subsubsection{列挙のアルゴリズム}
 \splus はグラフへの操作だが、本質的にはオイラー閉路のうち二辺に対する操作である。あるグラフGが与えられたとき、Gに対応するオイラー閉路(辺のリスト)が一つに定まるが、その閉路の中で\splus の対象となりうる辺のペアは複数現れる。よってそのペア(操作対象)を列挙することが必要である。各ペアの列挙は、以下の操作で実現される。
@@ -153,9 +154,9 @@
 \end{enumerate}
 $E=2V \Rightarrow E+V=E+\frac{1}{2}E=\frac{3}{2}E$であるため、$O(E+V)=O(E)$とみなせる。
 
-\subsection{\splus の適用}
+\subsection{\tops{\splus}{S+} の適用}
 
-\subsubsection{KEGにおける\splus のアルゴリズム}
+\subsubsection{KEGにおける\tops{\splus}{S+} のアルゴリズム}
 KEGを対象とした\splus のアルゴリズムはいかに示す通りである。
 \begin{enumerate}
     \item Odd頂点Oを追加する。
