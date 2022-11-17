@@ -23,8 +23,38 @@
 \usepackage{xcolor}
 \usepackage[ipaex]{pxchfon}
 \usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
 \usepackage[dvipdfmx, hidelinks]{hyperref}
 \usepackage{pxjahyper}
+
+%code block
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+%code block
 
 %macro
 \newcommand{\splus}{S${}^\text{+}$}
@@ -143,7 +173,15 @@
     \item \f{C_e}を2個連結する。
     \item i=[0, E-1]をループし、\f{e_s}=\f{C_e}[i]とする。j=[1, E-1]とし、\f{e_g}=\f{C_e}[i+j]とする。
 \end{enumerate}
-
+\begin{lstlisting}[language=Python]
+Ce = get_euler_circuit(graph)
+for i in range(len(E)):
+    for j in range(len(E)):
+        if i == j:
+            continue
+        es = Ce[i]
+        eg = Ce[j]
+\end{lstlisting}
 結果として生成されるペアはE(E-1)組となる。
 
 \subsubsection{計算量}
