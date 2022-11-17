@@ -169,19 +169,23 @@
 \splus はグラフへの操作だが、本質的にはオイラー閉路のうち二辺に対する操作である。あるグラフGが与えられたとき、Gに対応するオイラー閉路(辺のリスト)が一つに定まるが、その閉路の中で\splus の対象となりうる辺のペアは複数現れる。よってそのペア(操作対象)を列挙することが必要である。各ペアの列挙は、以下の操作で実現される。
 
 \begin{enumerate}
-    \item グラフGのオイラー閉路\f{C_e}を求める。\f{C_e}の長さはグラフの辺の総数と等しいので、E。
-    \item \f{C_e}を2個連結する。
-    \item i=[0, E-1]をループし、\f{e_s}=\f{C_e}[i]とする。j=[1, E-1]とし、\f{e_g}=\f{C_e}[i+j]とする。
+    \item グラフGのオイラー閉路\f{C_e}を求める。\f{C_e}の長さはグラフの辺の総数と等しいので、\f{len(C_e)=E}。
+    \item i=[0, E-1]をループし、その中でj=[0, E-1]をループする。\f{i\neq j}の場合ペアが組めるので、\f{e_s=C_e[i]}、\f{e_g=C_e[j]}とおいて\f{(e_s, e_g)}のペアを作ることができる。
 \end{enumerate}
-\begin{lstlisting}[language=Python]
-Ce = get_euler_circuit(graph)
-for i in range(len(E)):
-    for j in range(len(E)):
-        if i == j:
-            continue
-        es = Ce[i]
-        eg = Ce[j]
-\end{lstlisting}
+
+コード例を以下に示す。
+
+\begin{center}
+    \begin{lstlisting}[language=Python]
+    Ce = get_euler_circuit(graph)
+    for i in range(len(E)):
+        for j in range(len(E)):
+            if i == j:
+                continue
+            es = Ce[i]
+            eg = Ce[j]
+    \end{lstlisting}
+\end{center}
 結果として生成されるペアはE(E-1)組となる。
 
 \subsubsection{計算量}
