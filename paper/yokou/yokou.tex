@@ -1,0 +1,117 @@
+\documentclass[twocolumn, a4j]{jarticle}
+\usepackage[top=30truemm,bottom=25truemm,left=20truemm,right=20truemm]{geometry}
+\usepackage[dvipdfmx]{graphicx,color}
+\usepackage{authblk}
+\usepackage{titlesec}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+
+
+\setlength{\columnsep}{7mm}
+
+\lhead{4-1}
+\rhead{}
+\cfoot{}
+
+\title{\large\gt 結び目クロスキャップ数の自動計算について \\ \bf
+On automatic computation of crosscap number of knots}
+
+\author{\normalsize 山田海音, 伊藤昇(主査), 岡本修(副査)}
+
+\newcommand{\splus}{S${}^\text{+}$}
+\newcommand{\f}[1]{$\rm{#1}$} %flat math
+\newcommand{\ra }{$\rightarrow$}
+\newcommand{\image}[4][height=100pt]{%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=200pt, #1]{#2}
+    \caption{#3}
+    \label{fig:#4}
+\end{figure}%
+}
+
+\renewcommand\Authsep{\qquad}
+\renewcommand\Authand{\qquad}
+\renewcommand\Authands{\qquad}
+\renewcommand{\abstractname}{Abstract}
+\renewcommand{\headrulewidth}{0pt} % ヘッダーの羅線をなくす
+
+\date{}
+
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+
+\makeatletter
+\def\section{\@startsection {section}{1}{\z@}{-1.5ex plus -1ex minus -.2ex}{1.5 ex plus .2ex}{\large\bf}}
+\def\subsection{\@startsection {subsection}{1}{\z@}{-1.5ex plus -1ex minus -.2ex}{1.3 ex plus .2ex}{\normalsize\bf}}
+\def\subsubsection{\@startsection {subsubsection}{1}{\z@}{-1.5ex plus -1ex minus -.2ex}{.3 ex plus .2ex}{\large \bf $\spadesuit$ }}
+\makeatother
+
+\begin{document}
+\twocolumn[
+\maketitle
+\thispagestyle{fancy}
+\begin{abstract}
+The calculation of the number of crosscap number, which has been an unsolved problem in knot theory for many years, was improved from a state where only exponential time order calculations existed to a polynomial order calculation programmatically, using a new data structure for representing knots and the \splus algorithm for that structure. I also implemented those algorithms in Python.
+\end{abstract}
+\newline
+]
+
+
+\section{はじめに}
+数学の結び目理論では、一本のひもを捻ったり、ある部分を切断してから繋ぎなおすなどの操作をすることで、結び目の複雑さが増加していく。特に後者のタイプの操作の回数は、複雑な結び目を最初の輪の状態(これを自明な結び目と呼ぶ。)に戻すための逆操作の回数でもある。これは工学的にも応用の効く性質である。例えばある分子の構造的な強さというのは、その分子を結び目としてみたときの複雑さに対応しているといえる。言い換えると、結び目の複雑さについて網羅した表を作ることは、結び目で表現できる現実世界のものの複雑さを理解する助けになるということである。
+
+ある結び目について、切断してつなぎなおす操作 \splus が何回行われているかを、その結び目のクロスキャップ数と呼び、ある結び目$K$のクロスキャップ数を$n$とした時、$C(K)=n$と書くこととする。クロスキャップ数は結び目の複雑性を考える上で結び目種数と並んで"一番最初に考える数"といえるほど重要であり、クロスキャップ数の計算の高速化や自動化が求められている。クロスキャップ数1の結び目が求められたのは1978年であるが、クロスキャップ数の一般公式やアルゴリズムは未だない。困難な理由の一つは向きつき曲面に限定した種数(穴の数)に比べ手法が見つかりにくいからである。本研究では、グラフ理論を用いて結び目のクロスキャップ数を計算する手法について提案する。
+
+\section{先行研究}
+\subsection{$C(K)=3$のリストの作成}
+指導教員の伊藤昇先生による論文\cite{ck3}において、$C(K)=3$の結び目のリストが完成している。この研究では手計算で網羅的なリストを作成している。$C(K)=2$の結び目は3つ存在する。$C(K)=m+1$を満たす交代結び目リストを作成するには、C(K)=mのリストについてO(EC2)の計算が必要となり、mが多くなれば手計算は非現実である。クロスキャップ数に近い数であるツイスト数は交代結び目においてはジョーンズ多項式の第二係数である。しかしながらジョーンズ多項式は交点数Nとした時に$O(2^N)$の計算を必要とする。対象数が増える$C(K)=4$以降のリストを求めるためには、クロスキャップ数計算の自動化と高速化が求められている。
+
+\subsection{KEGの考案と同値判定}
+先述したクロスキャップ数の計算の自動化を目的とし、伊藤先生と筆者の共著で、結び目をグラフとして再構築する論文\cite{keg}を発表した。この研究では結び目がオイラーグラフとして解釈できることを応用し、結び目オイラーグラフ(KEG)のデータ構造ならびに、多項式時間で同値判定を行うアルゴリズムを提案した。これはS+が村杉和の一部、もしくは変形版と理解され、数学として由緒正しい操作であることを明らかにした定理を主結果としていた。一方で本研究は計算自動化を主眼とし必要なアルゴリズムを明示するものである。
+\image{./knot_to_keg.png}{結び目とKEGの対応}{knot_to_keg}
+
+\section{KEGに対する\splus のアルゴリズム}
+本研究では \splus をKEGのうちの2辺を選んで適用するアルゴリズムとして定義した。 \splus の適用対象となる2辺の列挙と、それに先んじたグラフ自体の拡張を定義した。
+
+\subsection{グラフの拡張}
+ある1辺に対して \splus を行いたいとき、グラフとして同一性を保ったままその辺を分割する必要がある。また、ある頂点内に対して \splus を行いたいとき、その頂点自体を分割して辺を用意する必要がある。これは直感的には結び目を広げてほぐす操作に対応する。
+
+\subsection{\splus の対象の列挙}
+拡張されたグラフについて、そのグラフに存在する辺の内2辺を選ぶ時のありうるペアを全て列挙する。これにより \splus のアルゴリズムが担当すべき範囲を狭め、コード全体のメンテナンス性を向上させた。
+
+\subsection{\splus のアルゴリズム}
+KEGを対象とした \splus のアルゴリズムは以下に示す通りである。
+\begin{enumerate}
+    \item Odd頂点Oを追加する。
+    \item a, bからOに、Oからc, dに繋がるように辺を追加する。この時aとd, bとcがそれぞれOの同じ側(A/B)に繋がるようにする。即ち、(a, O, \f{P_a}, A), (b, O, \f{P_b}, B), (O, c, B, \f{P_c}), (O, d, A, \f{P_d})の4辺を追加する。
+    \item \f{C_e}で\f{e_s} と\f{e_g} の間にある辺全てを逆向きにした辺を追加する。即ち、(u, v, \f{P_u}, \f{P_v})を(v, u, \f{P_v}, \f{P_u})にする。
+    \item $[\rm{e_s}, \rm{e_g}]$の辺を削除する
+\end{enumerate}
+\image[height=50pt]{./example_of_splus.png}{KEGに対する \splus の適用例}{example_of_splus}
+
+\section{計算量の評価}
+あるKEGにおいて、任意の2辺に対する \splus の結果を得るのに必要な計算量を考えていく。グラフの辺の数を$E$、選んだ2辺のうち、片方を\f{e_s}, もう片方を\f{e_g}として、
+\begin{enumerate}
+    \item 頂点追加\ra  $O(1)$
+    \item Odd頂点への4辺の追加\ra 定数なので$O(1)$
+    \item \f{e_s}と\f{e_g}の間の辺を逆にする\ra 最大E-2辺に行われるので$O(E)$
+    \item 逆転前の辺を削除する\ra 最大E-2辺に行われるので$O(E)$
+\end{enumerate}
+よって、\splus 自体は$O(E)$で完了する。
+
+$E$辺あるうちから2辺選ぶ操作は、$E \times (E-1)$ペア作れるので、全体として$O(E^3)$で列挙が完了する。
+
+よって、あるKEGについて \splus を行いうる部分についてもれなく \splus を行うのにかかる計算量は、$O(E^3)$である。
+
+\section{総括}
+結び目理論において長年未解決問題であったクロスキャップ数の計算について、結び目を表現する新しいデータ構造と、それに対する \splus のアルゴリズムを用いて、指数時間オーダーの計算しか存在しなかった状態から、プログラムで多項式オーダーで計算できるよう改善した。
+
+複雑な結び目についてもリストが作成できるようになるため、高分子化学や暗号、量子計算など、結び目を応用できる各分野について大きな貢献が見込める。
+
+\bibliographystyle{jplain}
+\bibliography{paper.bib}
+
+\end{document}
